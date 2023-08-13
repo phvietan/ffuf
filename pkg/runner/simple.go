@@ -135,6 +135,10 @@ func (r *SimpleRunner) Execute(req *ffuf.Request) (ffuf.Response, error) {
 	}
 	httpresp, err := r.client.Do(httpreq)
 	if err != nil {
+		errMsg := err.Error()
+		if strings.Contains(errMsg, "Client.Timeout exceeded") {
+			fmt.Println("\033[0;32mClient timeout exceeded ! Potential SQL injection time-based ?\033[0m")
+		}
 		return ffuf.Response{}, err
 	}
 
